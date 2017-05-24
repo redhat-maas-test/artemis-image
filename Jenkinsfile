@@ -1,4 +1,4 @@
 node {
     checkout scm
-    sh 'gradle buildArtemis assemble build buildTar downloadArtemis'
+    sh 'gradle assemble build buildTar downloadArtemis'
 }
