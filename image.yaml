@@ -19,9 +19,9 @@ packages:
     - python
     - which 
 
-# TODO: Use product built artifacts
+# TODO: Use AMQ 7
 sources:    
-    - artifact: https://dl.bintray.com/enmasse/snapshots/latest/artemis-image.tar
+    - artifact: artemis-image.tar
     - artifact: http://www-eu.apache.org/dist/activemq/activemq-artemis/2.1.0/apache-artemis-2.1.0-bin.tar.gz
 
 scripts:
