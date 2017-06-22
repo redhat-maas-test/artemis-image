@@ -1,12 +1,5 @@
 node {
     checkout scm
-    sh 'git submodule update --init' 
-    sh 'gradle assemble build buildTar'
-    sh 'make'
-}
-
-node {
-    checkout scm
     sh 'rm -rf scripts && git clone https://github.com/redhat-maas-test/scripts.git'
     stage ('build') {
         sh 'gradle assemble build buildTar'
