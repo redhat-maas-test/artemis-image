@@ -2,18 +2,15 @@ IMAGE_FILE?=image.yaml
 COMMIT?=$(shell git rev-parse HEAD | cut -c1-8)
 IMAGE_VERSION?=latest
 REPO?=$(shell cat $(IMAGE_FILE) | grep "^name:" | cut -d' ' -f2)
-DOGEN_VERSION?=2.0.1
-DOCKER_BUILD_OPTS?=""
+DOCKER_BUILD_OPTS?=
 DOCKER?=docker
 
 build: 
 	echo "Running docker build $(REPO)"
-	mkdir -p $(TMPDIR)/build/
-	cp -r image.yaml $(TMPDIR)/
-	cp -r build/* $(TMPDIR)/build/
-
-	$(DOCKER) run -i --rm -v $(TMPDIR):/tmp/output:z -v ${CURDIR}/scripts:/tmp/scripts:z -v /etc/yum.repos.d/rhel-base-os.repo:/tmp/repos/rhel-base-os.repo:z jboss/dogen:$(DOGEN_VERSION) --verbos /tmp/output/$(IMAGE_FILE) --repo-files-dir /tmp/repos --scripts /tmp/scripts /tmp/output/build
-	$(DOCKER) build $(DOCKER_BUILD_OPTS) -t $(REPO):$(COMMIT) $(TMPDIR)/build
+	mkdir -p /tmp/repos
+	cp -rf /etc/yum.repos.d/rhel-base-os.repo /tmp/repos/
+	dogen --repo-files-dir /tmp/repos --scripts $(CURDIR)/scripts --verbose $(IMAGE_FILE) build
+	$(DOCKER) build $(DOCKER_BUILD_OPTS) -t $(REPO):$(COMMIT) $(CURDIR)/build
 
 push:
 	$(DOCKER) tag $(REPO):$(COMMIT) $(DOCKER_REGISTRY)/$(REPO):$(COMMIT)
@@ -25,3 +22,5 @@ snapshot:
 
 clean:
 	rm -rf build
+
+.PHONY: build push snapshot clean

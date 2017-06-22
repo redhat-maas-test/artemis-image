@@ -7,13 +7,13 @@ node {
 
 node {
     checkout scm
-    sh 'git submodule update --init' 
+    sh 'rm -rf scripts && git clone https://github.com/redhat-maas-test/scripts.git'
     stage ('build') {
         sh 'gradle assemble build buildTar'
         junit '**/build/test-results/test/TEST-*.xml'
     }
     stage ('docker image') {
-        sh 'make TMPDIR=`mktemp -d` build'
+        sh 'make build'
     }
     stage ('docker image push') {
         withCredentials([usernamePassword(credentialsId: 'a9bc53ba-716c-45de-9d74-dd5d003f83c3', passwordVariable: 'DOCKER_PASSWD', usernameVariable: 'DOCKER_USER')]) {
