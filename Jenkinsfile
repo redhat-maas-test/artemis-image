@@ -20,7 +20,7 @@ node {
                 sh 'rm -rf systemtests && git clone https://github.com/EnMasseProject/systemtests.git'
                 sh 'rm -rf enmasse && git clone https://github.com/redhat-maas-test/enmasse.git'
 //                sh 'export OPENSHIFT_PROJECT=$BUILD_TAG; curl -s ${SCRIPTS}/run-tests.sh | bash /dev/stdin "" enmasse/install jboss-amqmaas-1-tech-preview/amqmaas10-broker-openshift'
-                junit 'systemtests/target/surefire-reports/TEST-*.xml'
+//                junit 'systemtests/target/surefire-reports/TEST-*.xml'
             }
         }
     }
