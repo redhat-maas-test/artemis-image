@@ -7,9 +7,7 @@ DOCKER?=docker
 
 build: 
 	echo "Running docker build $(REPO)"
-	mkdir -p /tmp/repos
-	cp -rf /etc/yum.repos.d/rhel-base-os.repo /tmp/repos/
-	dogen --repo-files-dir /tmp/repos --scripts $(CURDIR)/scripts --verbose $(IMAGE_FILE) build
+	dogen --repo-files-dir $(YUM_REPO_DIR) --scripts $(CURDIR)/scripts --verbose $(IMAGE_FILE) build
 	$(DOCKER) build $(DOCKER_BUILD_OPTS) -t $(REPO):$(COMMIT) $(CURDIR)/build
 
 push:
